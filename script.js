@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const city = cityinput.value.trim();
         if (!city) return;
 
-        try {
+        try { 
             const weatherdata = await fetchweatherdata(city); // Await the result of fetchweatherdata
             displayweatherdata(weatherdata); // Display weather data
             errormessage.classList.add('hidden'); // Hide error message if successful
@@ -34,18 +34,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Return the weather data parsed as JSON
-        return await response.json();
+        const data = await response.json();
+        return data;
     }
 
-    function displayweatherdata(weatherdata) {
-        cityinfo.textContent = weatherdata.name;
-        temperatureinfo.textContent = `Temperature: ${weatherdata.main.temp}°C`;
-        descriptioninfo.textContent = `Weather: ${weatherdata.weather[0].description}`;
+    function displayweatherdata(data) {
+        console.log(data);  
+        const { name, main, weather } = data; // Correct the variable to weatherdata
+        cityinfo.textContent = name; // City name
+        temperatureinfo.textContent = `Temperature: ${main.temp}°C`; // Temperature
+        descriptioninfo.textContent = `Weather: ${weather[0].description}`; // Weather description
+    
         weatherinfo.classList.remove('hidden'); // Show the weather info
+        errormessage.classList.add('hidden'); // Hide error message if data is successfully displayed
     }
 
     function showerrormessage() {
-        weatherinfo.classList.add('hidden');
-        errormessage.classList.remove('hidden'); // Show error message
+        weatherinfo.classList.remove('hidden'); // Hide weather info if an error occurs
+        errormessage.classList.add('hidden'); // Show error message
     }
 });
