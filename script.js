@@ -49,16 +49,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const { name, main, weather } = data;
 
         // Display data in the UI
-        cityinfo.textContent = name;
+        cityinfo.textContent = name; // Set the city name
+        temperatureinfo.textContent = `Temperature: ${main.temp}°C`; // Set the temperature
+        descriptioninfo.textContent = `Weather: ${weather[0].description}`; // Set the weather description
 
-        // Make sure the weather info is shown and error message is hidden
-        weatherinfo.classList.remove("hidden");                          
-        errormessage.classList.add('hidden');  
+        // Show weather info and hide error message
+        weatherinfo.classList.remove("hidden");  // Make weather info visible
+        errormessage.classList.add('hidden');  // Ensure error message is hidden
     }
 
     // Show an error message if city not found
     function showerrormessage() {
-        weatherinfo.classList.remove('hidden'); // Hide weather info
-        errormessage.classList.add('hidden'); // Show error message
+        // Hide weather info and show error message
+        weatherinfo.classList.add('hidden');
+        errormessage.classList.remove('hidden'); 
     }
 });
+
