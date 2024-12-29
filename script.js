@@ -64,5 +64,4 @@ document.addEventListener('DOMContentLoaded', () => {
         weatherinfo.classList.add('hidden');
         errormessage.classList.remove('hidden'); 
     }
-});
-
+}); 
