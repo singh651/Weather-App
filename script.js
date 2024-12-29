@@ -9,48 +9,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const API_Keys = "4cb21d57027d52a9fa762d0b8ab30fa2";
 
-    // Make the event handler async to use await inside
+    // Event listener for the weather button
     Getweatherbtn.addEventListener('click', async () => {
         const city = cityinput.value.trim();
-        if (!city) return;
+        if (!city) {
+            console.log("City name is empty.");
+            return;
+        }
 
-        try { 
+        try {
+            console.log("Fetching weather data for:", city);
             const weatherdata = await fetchweatherdata(city); // Await the result of fetchweatherdata
             displayweatherdata(weatherdata); // Display weather data
-            errormessage.classList.add('hidden'); // Hide error message if successful
         } catch (error) {
+            console.error("Error fetching data:", error.message);
             showerrormessage();
         }
     });
 
+    // Fetch weather data from the API
     async function fetchweatherdata(city) {
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_Keys}`; // Use correct API key
-
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_Keys}`;
+        
         const response = await fetch(url);
-        console.log("RESPONSE:", response);
-
+        
         if (!response.ok) {
             throw new Error("City not Found");
         }
 
-        // Return the weather data parsed as JSON
+        // Parse the JSON data from the API
         const data = await response.json();
+        console.log("Weather data received:", data);
         return data;
     }
 
+    // Function to display weather data
     function displayweatherdata(data) {
-        console.log(data);  
-        const { name, main, weather } = data; // Correct the variable to weatherdata
-        cityinfo.textContent = name; // City name
-        temperatureinfo.textContent = `Temperature: ${main.temp}°C`; // Temperature
-        descriptioninfo.textContent = `Weather: ${weather[0].description}`; // Weather description
-    
-        weatherinfo.classList.remove('hidden'); // Show the weather info
-        errormessage.classList.add('hidden'); // Hide error message if data is successfully displayed
+        console.log(data);
+        const { name, main, weather } = data;
+
+        // Display data in the UI
+        cityinfo.textContent = name;
+
+        // Make sure the weather info is shown and error message is hidden
+        weatherinfo.classList.remove("hidden");                          
+        errormessage.classList.add('hidden');  
     }
 
+    // Show an error message if city not found
     function showerrormessage() {
-        weatherinfo.classList.remove('hidden'); // Hide weather info if an error occurs
+        weatherinfo.classList.remove('hidden'); // Hide weather info
         errormessage.classList.add('hidden'); // Show error message
     }
 });
